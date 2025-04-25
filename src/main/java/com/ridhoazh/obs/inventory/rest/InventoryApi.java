@@ -33,7 +33,8 @@ public interface InventoryApi {
     @GetMapping(value = "/inventories",
             produces = { "application/json" })
     ResponseEntity<Page<Inventory>> searchInventory(
-            @ModelAttribute BaseSearchParams searchParams, Pageable pageable);
+            @ModelAttribute BaseSearchParams searchParams,
+            Pageable pageable);
 
     @PostMapping(value = "/inventory",
             produces = { "application/json" },

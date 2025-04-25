@@ -18,6 +18,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SequenceRepository extends JpaRepository<Sequence, String> {
 
+    Sequence findSequenceByName(String name);
+
     @Modifying
     @Query(value = "UPDATE Sequence s SET s.ordinal = ordinal + 1, s.lastUpdate = CURRENT_DATE WHERE name = :name")
     void setNext(@Param("name") String name);

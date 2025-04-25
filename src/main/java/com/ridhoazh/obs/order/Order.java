@@ -1,5 +1,7 @@
 package com.ridhoazh.obs.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ridhoazh.obs.item.Item;
 
 import jakarta.persistence.Column;
@@ -26,6 +28,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "item_id")
+    @JsonIgnore
     private Item item;
 
     @Column(name = "qty")
@@ -44,6 +47,11 @@ public class Order {
 
     public Item getItem() {
         return item;
+    }
+    
+    @JsonProperty("itemId")
+    public Long getItemId() {
+        return item != null ? item.getId() : null;
     }
 
     public void setItem(Item item) {

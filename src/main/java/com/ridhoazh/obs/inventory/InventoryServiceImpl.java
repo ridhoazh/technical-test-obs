@@ -55,6 +55,12 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
+    @Transactional
+    public void saveAll(List<Inventory> inventory) {
+        inventoryRepository.saveAllAndFlush(inventory);
+    }
+
+    @Override
     public Boolean isExist(Long id) {
         return Boolean.TRUE.equals(findItemById(id).isPresent());
     }
@@ -70,6 +76,16 @@ public class InventoryServiceImpl implements InventoryService {
                 .mapToInt(
                         i -> i.getType().equals("T") ? i.getQty() : -i.getQty())
                 .sum();
+    }
+
+    @Override
+    public void stockUpdate(Inventory inventory) {
+        save(inventory);
+    }
+
+    @Override
+    public void stockUpdate(List<Inventory> inventory) {
+        saveAll(inventory);
     }
 
 }

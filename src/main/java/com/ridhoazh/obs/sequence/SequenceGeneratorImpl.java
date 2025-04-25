@@ -3,6 +3,7 @@ package com.ridhoazh.obs.sequence;
 import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 // @formatter:off
@@ -44,6 +45,22 @@ public class SequenceGeneratorImpl
     @Transactional
     public String getNext(String prefix) {
         Sequence val = setAndGetNext(prefix);
-        return String.format("%s%05d", prefix, val.getOrdinal().intValue());
+        return String.format("%s%d", prefix, val.getOrdinal().intValue());
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public String getNextBatch(String prefix) {
+        Sequence seq = sequenceRepository
+                .findSequenceByName(prefix);
+        if (seq == null) {
+            seq = new Sequence();
+        }
+        seq.setName(prefix);
+        seq.setOrdinal(seq.getOrdinal() + 1);
+        seq.setLastUpdate(LocalDate.now());
+        Integer val = seq.getOrdinal().intValue();
+        sequenceRepository.save(seq);
+        return String.format("%s%d", prefix, val);
     }
 }

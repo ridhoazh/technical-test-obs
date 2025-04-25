@@ -56,7 +56,8 @@ public class InventoryApiController implements InventoryApi {
 
     @Override
     public ResponseEntity<Page<Inventory>> searchInventory(
-            @ModelAttribute BaseSearchParams searchParams, Pageable pageable) {
+            @ModelAttribute BaseSearchParams searchParams,
+            Pageable pageable) {
         return new ResponseEntity<>(
                 inventoryService.search(searchParams, pageable),
                 HttpStatus.OK);

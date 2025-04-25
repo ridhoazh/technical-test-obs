@@ -1,4 +1,4 @@
-package com.ridhoazh.obs.item.rest;
+package com.ridhoazh.obs.order.rest;
 
 import java.util.Map;
 
@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.ridhoazh.obs.item.Item;
+import com.ridhoazh.obs.order.Order;
+import com.ridhoazh.obs.utils.BaseSearchParams;
 
 // @formatter:off
 /**
@@ -22,36 +23,35 @@ import com.ridhoazh.obs.item.Item;
  */
 // @formatter:on
 
-public interface ItemApi {
+public interface OrderApi {
 
-    @GetMapping(value = "/item/{id}",
+    @GetMapping(value = "/order/{id}",
             produces = { "application/json" })
-    ResponseEntity<Item> detailItem(
-            @PathVariable Long id,
-            @ModelAttribute ItemSearchParams searchParams);
+    ResponseEntity<Order> detailOrder(
+            @PathVariable("id") String id);
 
-    @GetMapping(value = "/items",
+    @GetMapping(value = "/orders",
             produces = { "application/json" })
-    ResponseEntity<Page<Item>> searchItem(
-            @ModelAttribute ItemSearchParams searchParams,
+    ResponseEntity<Page<Order>> searchOrder(
+            @ModelAttribute BaseSearchParams searchParams,
             Pageable pageable);
 
-    @PostMapping(value = "/item",
+    @PostMapping(value = "/order",
             produces = { "application/json" },
             consumes = { "application/json" })
-    ResponseEntity<Map<String, Object>> createItem(
-            @RequestBody ItemModel itemModel);
+    ResponseEntity<Map<String, Object>> createOrder(
+            @RequestBody OrderModel orderModel);
 
-    @PutMapping(value = "/item/{itemId}",
+    @PutMapping(value = "/order/{id}",
             produces = { "application/json" },
             consumes = { "application/json" })
-    ResponseEntity<Map<String, Object>> updateItem(
-            @PathVariable(name = "itemId") Long itemId,
-            @RequestBody ItemModel itemModel);
+    ResponseEntity<Map<String, Object>> updateOrder(
+            @PathVariable(name = "id") String orderId,
+            @RequestBody OrderModel orderModel);
 
-    @DeleteMapping(value = "/item/{itemId}",
+    @DeleteMapping(value = "/order/{id}",
             produces = { "application/json" })
-    ResponseEntity<Map<String, Object>> deleteItem(
-            @PathVariable("itemId") Long itemId);
+    ResponseEntity<Map<String, Object>> deleteOrder(
+            @PathVariable("id") String orderId);
 
 }

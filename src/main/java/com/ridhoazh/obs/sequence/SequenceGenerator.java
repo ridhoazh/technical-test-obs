@@ -11,9 +11,6 @@ public interface SequenceGenerator {
 
     String getNext(String prefix);
 
-    static Sequence setAndGetNext(String prefix) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    String getNextBatch(String prefix);
 
 }
