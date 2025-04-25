@@ -3,14 +3,13 @@ package com.ridhoazh.obs.inventory;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ridhoazh.obs.utils.BaseSearchParams;
-
-import io.micrometer.common.util.StringUtils;
 
 // @formatter:off
 /**
@@ -31,8 +30,9 @@ public class InventoryServiceImpl implements InventoryService {
     public Page<Inventory> search(BaseSearchParams searchParams,
             Pageable pageable) {
         String keywords = searchParams.getKeywords();
-        Long searchParam = StringUtils.isBlank(keywords) ? null
-                : Long.valueOf(keywords);
+        Long searchParam = StringUtils.isBlank(keywords)
+                || !StringUtils.isNumeric(keywords) ? null
+                        : Long.valueOf(keywords);
         return inventoryRepository.search(searchParam,
                 pageable);
     }

@@ -2,6 +2,7 @@ package com.ridhoazh.obs.item;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ridhoazh.obs.inventory.InventoryService;
 import com.ridhoazh.obs.item.rest.ItemSearchParams;
-
-import io.micrometer.common.util.StringUtils;
 
 // @formatter:off
 /**
@@ -34,8 +33,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Page<Item> search(ItemSearchParams searchParams, Pageable pageable) {
         String keywords = searchParams.getKeywords();
-        Long idParam = StringUtils.isBlank(keywords) ? null
-                : Long.valueOf(keywords);
+        Long idParam = StringUtils.isBlank(keywords)
+                || !StringUtils.isNumeric(keywords) ? null
+                        : Long.valueOf(keywords);
 
         Page<Item> items = itemRepository.search(idParam, keywords, pageable);
         if (Boolean.TRUE.equals(searchParams.isShowRemainingStock())) {

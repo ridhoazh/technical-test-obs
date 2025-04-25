@@ -197,7 +197,6 @@ public class OrderApiController implements OrderApi {
             String type) {
         Long id = Utils.removePrefixId(
                 sequenceGenerator.getNextBatch("INVENTORY"));
-        System.out.println("id nya: " + id);
         Inventory inventory = new Inventory();
         inventory.setId(id);
         inventory.setItem(currentItem);
