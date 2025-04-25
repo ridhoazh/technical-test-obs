@@ -1,4 +1,4 @@
-package com.ridhoazh.obs.item.rest;
+package com.ridhoazh.obs.inventory.rest;
 
 import org.springframework.lang.Nullable;
 
@@ -15,35 +15,40 @@ import com.google.auto.value.AutoValue;
 // @formatter:on
 
 @AutoValue
-@JsonDeserialize(builder = AutoValue_ItemModel.Builder.class)
+@JsonDeserialize(builder = AutoValue_InventoryModel.Builder.class)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,
         setterVisibility = JsonAutoDetect.Visibility.NONE)
-public abstract class ItemModel {
+public abstract class InventoryModel {
 
     @Nullable
     public abstract Long id();
 
     @Nullable
-    public abstract String name();
+    public abstract Long itemId();
 
     @Nullable
-    public abstract Integer price();
+    public abstract Integer qty();
+
+    @Nullable
+    public abstract String type();
 
     public static Builder builder() {
-        return new AutoValue_ItemModel.Builder();
+        return new AutoValue_InventoryModel.Builder();
 
     }
 
     @AutoValue.Builder
     @JsonPOJOBuilder(withPrefix = "")
     public static interface Builder {
-        public abstract ItemModel build();
+        public abstract InventoryModel build();
 
         public abstract Builder id(Long value);
 
-        public abstract Builder name(String value);
+        public abstract Builder itemId(Long value);
 
-        public abstract Builder price(Integer value);
+        public abstract Builder qty(Integer value);
+
+        public abstract Builder type(String value);
 
     }
 }

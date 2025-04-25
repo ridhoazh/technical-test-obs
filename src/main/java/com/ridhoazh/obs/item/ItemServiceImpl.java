@@ -8,15 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ridhoazh.obs.inventory.InventoryService;
-import com.ridhoazh.obs.utils.BaseSearchParams;
+import com.ridhoazh.obs.item.rest.ItemSearchParams;
 
 import io.micrometer.common.util.StringUtils;
 
 // @formatter:off
 /**
- * 🧠 Created by: Ridho Azhari Riyadi
- * 🗓️ Date: Apr 24, 2025
- * 💻 Auto-generated because Ridho too lazy to type this manually
+ * Created by: Ridho Azhari Riyadi
+ * Date: Apr 24, 2025
  */
 // @formatter:on
 
@@ -33,22 +32,32 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<Item> search(BaseSearchParams searchParams, Pageable pageable) {
+    public Page<Item> search(ItemSearchParams searchParams, Pageable pageable) {
         String keywords = searchParams.getKeywords();
         Long idParam = StringUtils.isBlank(keywords) ? null
                 : Long.valueOf(keywords);
 
         Page<Item> items = itemRepository.search(idParam, keywords, pageable);
-        items.forEach(item -> {
-            item.setCurrentStock(inventoryService.getActualStock(item.getId()));
-        });
+        if (Boolean.TRUE.equals(searchParams.isShowRemainingStock())) {
+            items.forEach(item -> {
+                item.setCurrentStock(
+                        inventoryService.getActualStock(item.getId()));
+            });
+        }
 
         return items;
     }
 
     @Override
-    public Item detail(Long id) {
-        return findItemById(id).orElse(null);
+    public Item detail(Long id, ItemSearchParams searchParams) {
+        Optional<Item> item = findItemById(id);
+        if (Boolean.TRUE.equals(searchParams.isShowRemainingStock())) {
+            item.map(i -> {
+                i.setCurrentStock(inventoryService.getActualStock(id));
+                return i;
+            });
+        }
+        return item.get();
     }
 
     @Override
@@ -69,10 +78,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private Optional<Item> findItemById(Long id) {
-        return itemRepository.findById(id)
-                .map(item -> {
-                    item.setCurrentStock(inventoryService.getActualStock(id));
-                    return item;
-                });
+        return itemRepository.findById(id);
+
+    }
+
+    @Override
+    public Item detail(Long id) {
+        return findItemById(id).orElse(null);
     }
 }

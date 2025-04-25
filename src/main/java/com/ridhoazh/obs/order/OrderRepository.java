@@ -4,9 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 // @formatter:off
 /**
- * 🧠 Created by: Ridho Azhari Riyadi
- * 🗓️ Date: Apr 23, 2025
- * 💻 Auto-generated because Ridho too lazy to type this manually
+ * Created by: Ridho Azhari Riyadi
+ * Date: Apr 23, 2025
  */
 // @formatter:on
 

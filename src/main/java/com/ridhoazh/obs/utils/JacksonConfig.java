@@ -10,9 +10,8 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 // @formatter:off
 /**
- * 🧠 Created by: Ridho Azhari Riyadi
- * 🗓️ Date: Apr 23, 2025
- * 💻 Auto-generated because Ridho too lazy to type this manually
+ * Created by: Ridho Azhari Riyadi
+ * Date: Apr 23, 2025
  */
 // @formatter:on
 

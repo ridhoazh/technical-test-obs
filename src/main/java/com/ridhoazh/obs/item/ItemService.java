@@ -3,19 +3,20 @@ package com.ridhoazh.obs.item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.ridhoazh.obs.utils.BaseSearchParams;
+import com.ridhoazh.obs.item.rest.ItemSearchParams;
 
 // @formatter:off
 /**
- * 🧠 Created by: Ridho Azhari Riyadi
- * 🗓️ Date: Apr 24, 2025
- * 💻 Auto-generated because Ridho too lazy to type this manually
+ * Created by: Ridho Azhari Riyadi
+ * Date: Apr 24, 2025
  */
 // @formatter:on
 
 public interface ItemService {
 
-    Page<Item> search(BaseSearchParams searchParams, Pageable pageable);
+    Page<Item> search(ItemSearchParams searchParams, Pageable pageable);
+
+    Item detail(Long id, ItemSearchParams searchParams);
 
     Item detail(Long id);
 

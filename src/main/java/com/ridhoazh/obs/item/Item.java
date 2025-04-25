@@ -1,5 +1,7 @@
 package com.ridhoazh.obs.item;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,9 +10,8 @@ import jakarta.persistence.Transient;
 
 //@formatter:off
 /**
-* 🧠 Created by: Ridho Azhari Riyadi
-* 🗓️ Date: Apr 23, 2025
-* 💻 Auto-generated because Ridho too lazy to type this manually
+* Created by: Ridho Azhari Riyadi
+* Date: Apr 23, 2025
 */
 //@formatter:on
 @Entity
@@ -28,6 +29,7 @@ public class Item {
     private Integer price;
 
     @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer currentStock;
 
     public Item() {

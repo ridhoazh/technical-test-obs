@@ -1,11 +1,11 @@
 package com.ridhoazh.obs.inventory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ridhoazh.obs.item.Item;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,9 +13,8 @@ import jakarta.persistence.Table;
 
 // @formatter:off
 /**
- * 🧠 Created by: Ridho Azhari Riyadi
- * 🗓️ Date: Apr 23, 2025
- * 💻 Auto-generated because Ridho too lazy to type this manually
+ * Created by: Ridho Azhari Riyadi
+ * Date: Apr 23, 2025
  */
 // @formatter:on
 
@@ -24,12 +23,12 @@ import jakarta.persistence.Table;
 public class Inventory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
+    @JsonIgnore
     private Item item;
 
     @Column(name = "qty")
@@ -48,6 +47,11 @@ public class Inventory {
 
     public Item getItem() {
         return item;
+    }
+
+    @JsonProperty("itemId")
+    public Long getItemId() {
+        return item != null ? item.getId() : null;
     }
 
     public void setItem(Item item) {

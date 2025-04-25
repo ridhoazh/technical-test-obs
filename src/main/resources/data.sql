@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS item (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     name VARCHAR(255),
     price INT
 );
 
 CREATE TABLE IF NOT EXISTS inventory (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     item_id BIGINT,
     qty INT,
     type VARCHAR(1),
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS sequence (
 
 INSERT INTO sequence
 (uuid, name, ordinal, last_update)VALUES
-('7a01c1e8-dec8-4c6b-8f89-89c753c061c1', 'INVENTORY', 7, '2025-04-24'),
+('7a01c1e8-dec8-4c6b-8f89-89c753c061c1', 'INVENTORY', 9, '2025-04-24'),
 ('7a01c1e8-dec8-4c6b-8f89-89c753c061c2', 'ITEM', 7, '2025-04-24'),
 ('7a01c1e8-dec8-4c6b-8f89-89c753c061c3', 'O', 11, '2025-04-24');
 

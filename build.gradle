@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.15.0'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
     
     implementation 'com.google.auto.value:auto-value-annotations:1.10'
     annotationProcessor 'com.google.auto.value:auto-value:1.10'

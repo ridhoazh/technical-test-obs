@@ -1,4 +1,4 @@
-package com.ridhoazh.obs.item.rest;
+package com.ridhoazh.obs.inventory.rest;
 
 import java.util.Map;
 
@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.ridhoazh.obs.item.Item;
+import com.ridhoazh.obs.inventory.Inventory;
+import com.ridhoazh.obs.utils.BaseSearchParams;
 
 // @formatter:off
 /**
@@ -22,35 +23,34 @@ import com.ridhoazh.obs.item.Item;
  */
 // @formatter:on
 
-public interface ItemApi {
+public interface InventoryApi {
 
-    @GetMapping(value = "/item/{id}",
+    @GetMapping(value = "/inventory/{id}",
             produces = { "application/json" })
-    ResponseEntity<Item> detailItem(
-            @PathVariable Long id,
-            @ModelAttribute ItemSearchParams searchParams);
+    ResponseEntity<Inventory> detailInventory(
+            @PathVariable("id") Long id);
 
-    @GetMapping(value = "/items",
+    @GetMapping(value = "/inventories",
             produces = { "application/json" })
-    ResponseEntity<Page<Item>> searchItem(
-            @ModelAttribute ItemSearchParams searchParams, Pageable pageable);
+    ResponseEntity<Page<Inventory>> searchInventory(
+            @ModelAttribute BaseSearchParams searchParams, Pageable pageable);
 
-    @PostMapping(value = "/item",
+    @PostMapping(value = "/inventory",
             produces = { "application/json" },
             consumes = { "application/json" })
-    ResponseEntity<Map<String, Object>> createItem(
-            @RequestBody ItemModel itemModel);
+    ResponseEntity<Map<String, Object>> createInventory(
+            @RequestBody InventoryModel InventoryModel);
 
-    @PutMapping(value = "/item/{itemId}",
+    @PutMapping(value = "/inventory/{id}",
             produces = { "application/json" },
             consumes = { "application/json" })
-    ResponseEntity<Map<String, Object>> updateItem(
-            @PathVariable(name = "itemId") Long itemId,
-            @RequestBody ItemModel itemModel);
+    ResponseEntity<Map<String, Object>> updateInventory(
+            @PathVariable(name = "id") Long inventoryId,
+            @RequestBody InventoryModel InventoryModel);
 
-    @DeleteMapping(value = "/item/{itemId}",
+    @DeleteMapping(value = "/inventory/{id}",
             produces = { "application/json" })
-    ResponseEntity<Map<String, Object>> deleteItem(
-            @PathVariable("itemId") Long itemId);
+    ResponseEntity<Map<String, Object>> deleteInventory(
+            @PathVariable("id") Long inventoryId);
 
 }

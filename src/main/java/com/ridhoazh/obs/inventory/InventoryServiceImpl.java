@@ -14,9 +14,8 @@ import io.micrometer.common.util.StringUtils;
 
 // @formatter:off
 /**
- * 🧠 Created by: Ridho Azhari Riyadi
- * 🗓️ Date: Apr 25, 2025
- * 💻 Auto-generated because Ridho too lazy to type this manually
+ * Created by: Ridho Azhari Riyadi
+ * Date: Apr 25, 2025
  */
 // @formatter:on
 
@@ -32,9 +31,9 @@ public class InventoryServiceImpl implements InventoryService {
     public Page<Inventory> search(BaseSearchParams searchParams,
             Pageable pageable) {
         String keywords = searchParams.getKeywords();
-        Long idParam = StringUtils.isBlank(keywords) ? null
+        Long searchParam = StringUtils.isBlank(keywords) ? null
                 : Long.valueOf(keywords);
-        return inventoryRepository.search(idParam,
+        return inventoryRepository.search(searchParam,
                 pageable);
     }
 

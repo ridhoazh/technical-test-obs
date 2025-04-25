@@ -16,16 +16,15 @@ import com.ridhoazh.obs.item.Item;
 import com.ridhoazh.obs.item.ItemMapper;
 import com.ridhoazh.obs.item.ItemService;
 import com.ridhoazh.obs.sequence.SequenceGenerator;
-import com.ridhoazh.obs.utils.BaseSearchParams;
 import com.ridhoazh.obs.utils.Utils;
+import com.ridhoazh.obs.utils.ValidationMessage;
 
 import io.micrometer.common.util.StringUtils;
 
 // @formatter:off
 /**
- * 🧠 Created by: Ridho Azhari Riyadi
- * 🗓️ Date: Apr 24, 2025
- * 💻 Auto-generated because Ridho too lazy to type this manually
+ * Created by: Ridho Azhari Riyadi
+ * Date: Apr 24, 2025
  */
 // @formatter:on
 
@@ -42,8 +41,9 @@ public class ItemApiController implements ItemApi {
 
     @Override
     public ResponseEntity<Item> detailItem(
-            @PathVariable(name = "id") Long id) {
-        Item item = itemService.detail(id);
+            @PathVariable(name = "id") Long id,
+            @ModelAttribute ItemSearchParams searchParams) {
+        Item item = itemService.detail(id, searchParams);
         if (item != null) {
             return new ResponseEntity<>(item,
                     HttpStatus.OK);
@@ -54,7 +54,7 @@ public class ItemApiController implements ItemApi {
 
     @Override
     public ResponseEntity<Page<Item>> searchItem(
-            @ModelAttribute BaseSearchParams searchParams, Pageable pageable) {
+            @ModelAttribute ItemSearchParams searchParams, Pageable pageable) {
         return new ResponseEntity<>(itemService.search(searchParams, pageable),
                 HttpStatus.OK);
     }
@@ -70,7 +70,7 @@ public class ItemApiController implements ItemApi {
 
         return new ResponseEntity<>(
                 Utils.buildResponseMessage(item.getId().toString(),
-                        "successfully created"),
+                        ValidationMessage.CREATED),
                 HttpStatus.CREATED);
     }
 
@@ -85,12 +85,12 @@ public class ItemApiController implements ItemApi {
 
             return new ResponseEntity<>(
                     Utils.buildResponseMessage(itemId.toString(),
-                            "successfully updated"),
+                            ValidationMessage.UPDATED),
                     HttpStatus.OK);
         }
         return new ResponseEntity<>(
                 Utils.buildResponseMessage(itemId.toString(),
-                        "not found"),
+                        ValidationMessage.NOT_FOUND),
                 HttpStatus.NOT_FOUND);
     }
 
@@ -102,12 +102,12 @@ public class ItemApiController implements ItemApi {
             itemService.delete(currentItem);
             return new ResponseEntity<>(
                     Utils.buildResponseMessage(itemId.toString(),
-                            "successfully deleted"),
+                            ValidationMessage.DELETED),
                     HttpStatus.OK);
         }
         return new ResponseEntity<>(
                 Utils.buildResponseMessage(itemId.toString(),
-                        "not found"),
+                        ValidationMessage.NOT_FOUND),
                 HttpStatus.NOT_FOUND);
     }
 
@@ -115,13 +115,13 @@ public class ItemApiController implements ItemApi {
         if (StringUtils.isBlank(item.name())) {
             throw new InvalidParameterException(
                     "name",
-                    "com.ridhoazh.obs.exception.value_is_null");
+                    ValidationMessage.NULL);
         }
 
         if (item.price() == null || item.price() < 0) {
             throw new InvalidParameterException(
                     "price",
-                    "com.ridhoazh.obs.exception.value_is_null_or_below_zero");
+                    ValidationMessage.NULL_OR_NEGATIVE);
         }
     }
 
