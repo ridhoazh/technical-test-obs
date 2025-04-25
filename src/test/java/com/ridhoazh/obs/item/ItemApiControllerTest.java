@@ -27,8 +27,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.ridhoazh.obs.exception.ApiExceptionHandler;
+import com.ridhoazh.obs.inventory.InventoryService;
 import com.ridhoazh.obs.item.rest.ItemApiController;
 import com.ridhoazh.obs.item.rest.ItemModel;
+import com.ridhoazh.obs.order.OrderService;
 import com.ridhoazh.obs.sequence.SequenceGenerator;
 
 // @formatter:off
@@ -47,13 +49,18 @@ public class ItemApiControllerTest {
     private ItemService itemService;
     @Mock
     private SequenceGenerator sequenceGenerator;
+    @Mock
+    private OrderService orderService;
+    @Mock
+    private InventoryService inventoryService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(
-                        new ItemApiController(itemService,
+                        new ItemApiController(itemService, inventoryService,
+                                orderService,
                                 sequenceGenerator))
                 .setCustomArgumentResolvers(
                         new PageableHandlerMethodArgumentResolver())
@@ -239,6 +246,45 @@ public class ItemApiControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testDeleteButHaveOrder() throws Exception {
+        when(itemService.detail(any())).thenReturn(buildEntity(0));
+        when(itemService.isExist(any())).thenReturn(true);
+        when(sequenceGenerator.getNext(any())).thenReturn("INVENTORY1");
+        when(orderService.isItemHaveTransaction(any())).thenReturn(true);
+        mockMvc.perform(delete("/item/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testDeleteButHaveInventory() throws Exception {
+        when(itemService.detail(any())).thenReturn(buildEntity(0));
+        when(itemService.isExist(any())).thenReturn(true);
+        when(sequenceGenerator.getNext(any())).thenReturn("INVENTORY1");
+        when(orderService.isItemHaveTransaction(any())).thenReturn(true);
+        mockMvc.perform(delete("/item/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testDeleteButHaveOrderAndInventory() throws Exception {
+        when(itemService.detail(any())).thenReturn(buildEntity(0));
+        when(itemService.isExist(any())).thenReturn(true);
+        when(sequenceGenerator.getNext(any())).thenReturn("INVENTORY1");
+        when(orderService.isItemHaveTransaction(any())).thenReturn(true);
+        mockMvc.perform(delete("/item/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     private Page<Item> dummyPage() {

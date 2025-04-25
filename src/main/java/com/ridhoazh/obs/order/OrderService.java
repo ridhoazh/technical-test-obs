@@ -24,4 +24,6 @@ public interface OrderService {
 
     Boolean isExist(String id);
 
+    Boolean isItemHaveTransaction(Long itemId);
+
 }

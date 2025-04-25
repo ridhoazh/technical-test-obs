@@ -23,4 +23,5 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             @Param("itemId") Long itemId,
             Pageable pageable);
 
+    boolean existsByItem_Id(Long itemId);
 }

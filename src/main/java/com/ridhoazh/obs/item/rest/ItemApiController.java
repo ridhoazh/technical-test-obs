@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ridhoazh.obs.exception.InvalidParameterException;
+import com.ridhoazh.obs.inventory.InventoryService;
 import com.ridhoazh.obs.item.Item;
 import com.ridhoazh.obs.item.ItemMapper;
 import com.ridhoazh.obs.item.ItemService;
+import com.ridhoazh.obs.order.OrderService;
 import com.ridhoazh.obs.sequence.SequenceGenerator;
 import com.ridhoazh.obs.utils.Utils;
 import com.ridhoazh.obs.utils.ValidationMessage;
@@ -31,11 +33,16 @@ import io.micrometer.common.util.StringUtils;
 @RestController
 public class ItemApiController implements ItemApi {
     private final ItemService itemService;
+    private final InventoryService inventoryService;
+    private final OrderService orderService;
     private final SequenceGenerator sequenceGenerator;
 
     public ItemApiController(ItemService itemService,
+            InventoryService inventoryService, OrderService orderService,
             SequenceGenerator sequenceGenerator) {
         this.itemService = itemService;
+        this.inventoryService = inventoryService;
+        this.orderService = orderService;
         this.sequenceGenerator = sequenceGenerator;
     }
 
@@ -99,6 +106,14 @@ public class ItemApiController implements ItemApi {
             @PathVariable(name = "itemId") Long itemId) {
         Item currentItem = itemService.detail(itemId);
         if (currentItem != null) {
+            // add validation if item already has order and inventory
+            if (orderService.isItemHaveTransaction(itemId)
+                    || inventoryService.isItemHaveTransaction(itemId)) {
+                throw new InvalidParameterException(
+                        "item",
+                        ValidationMessage.ITEM_HAS_TRANSACTION);
+            }
+
             itemService.delete(currentItem);
             return new ResponseEntity<>(
                     Utils.buildResponseMessage(itemId.toString(),

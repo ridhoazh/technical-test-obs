@@ -88,4 +88,9 @@ public class InventoryServiceImpl implements InventoryService {
         saveAll(inventory);
     }
 
+    @Override
+    public Boolean isItemHaveTransaction(Long itemId) {
+        return inventoryRepository.existsByItem_Id(itemId);
+    }
+
 }

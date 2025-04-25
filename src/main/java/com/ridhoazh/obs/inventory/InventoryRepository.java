@@ -26,4 +26,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     @Query("SELECT i FROM Inventory i WHERE i.item.id = :id ")
     List<Inventory> findItemsById(
             @Param("id") Long id);
+
+    boolean existsByItem_Id(Long itemId);
 }

@@ -33,4 +33,6 @@ public interface InventoryService {
 
     void stockUpdate(List<Inventory> inventory);
 
+    Boolean isItemHaveTransaction(Long itemId);
+
 }

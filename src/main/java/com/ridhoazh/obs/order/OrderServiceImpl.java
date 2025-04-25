@@ -67,4 +67,9 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(id);
     }
 
+    @Override
+    public Boolean isItemHaveTransaction(Long itemId) {
+        return orderRepository.existsByItem_Id(itemId);
+    }
+
 }

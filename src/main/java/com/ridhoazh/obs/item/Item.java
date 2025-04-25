@@ -1,10 +1,17 @@
 package com.ridhoazh.obs.item;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ridhoazh.obs.inventory.Inventory;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -27,6 +34,12 @@ public class Item {
 
     @Column(name = "price")
     private Integer price;
+
+    @OneToMany(mappedBy = "item",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnore
+    private List<Inventory> inventories = new ArrayList<>();
 
     @Transient
     @JsonInclude(JsonInclude.Include.NON_NULL)

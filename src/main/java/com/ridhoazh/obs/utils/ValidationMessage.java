@@ -17,5 +17,6 @@ public class ValidationMessage {
     public static String DELETED = "Successfully deleted";
     public static String STOCK_UNDER_ZERO = "Sorry, stock can't be reduced to less than zero, please revise the quantity.";
     public static String STOCK_INSUFFICIENT = "Sorry, stock is insufficient, please revise the quantity.";
+    public static String ITEM_HAS_TRANSACTION = "Sorry, cannot delete item that has order / inventory, please kindly remove that first.";
 
 }
